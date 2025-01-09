@@ -12,18 +12,26 @@ export default function Pagina1Screen() {
   const [nombre, setnombre] = useState('')
 
 //GUARDAR//
-  function guardar(): void {
+  function guardar(){
 
     if (!id || !marca || !nombre || cantidad <= 0) {
         Alert.alert('Error', 'Completa todos los campos.');
         return;
       }
       
-    set(ref(db, 'Autos/' + id), {
-      brand: marca,
-      amount: cantidad,
-      name: nombre
-    });
+     try{
+        set(ref(db, 'Autos/' + id), {
+            brand: marca,
+            amount: cantidad,
+            name: nombre
+          });
+
+          Alert.alert("El auto se a registrado con exito")
+          limpiar();
+     } catch (error){
+        Alert.alert("Error no se puede completar el registro")
+     }
+    
   }
  
   function limpiar (): void{
@@ -43,7 +51,7 @@ export default function Pagina1Screen() {
 
   return (
     <View>
-      <Text style={{fontSize:30, color:'black'}}>Formulario</Text>
+      <Text style={{fontSize:30, color:'black'}}>Registro de Autos</Text>
       <TextInput
         placeholder='Ingrese un Id'
         style={styles.input}
@@ -71,7 +79,7 @@ export default function Pagina1Screen() {
       />
       
 
-      <Button title='Guardar' onPress={()=>guardar()}/>
+      <Button title='Guardar' onPress={()=>guardar() } />
 
     </View>
   )
