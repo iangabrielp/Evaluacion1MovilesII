@@ -78,7 +78,6 @@ export default function Pagina1Screen() {
         value={cantidad.toString()}
       />
       
-
       <Button title='Guardar' onPress={()=>guardar() } />
 
     </View>
