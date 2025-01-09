@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import {ref, set } from "firebase/database";
 import { db } from '../config/Config';
@@ -6,59 +6,70 @@ import { db } from '../config/Config';
 
 export default function Pagina1Screen() {
 
-  const [cedula, setcedula] = useState('')
+  const [id, setid] = useState('')
+  const [marca, setmarca] = useState('')
+  const [cantidad, setcantidad] = useState(0)
   const [nombre, setnombre] = useState('')
-  const [edad, setedad] = useState(0)
-  const [correo, setcorreo] = useState('')
 
 //GUARDAR//
-  function guardar() {
-    set(ref(db, 'usuarios/' + cedula), {
-      name: nombre,
-      age: edad,
-      email: correo
+  function guardar(): void {
+
+    if (!id || !marca || !nombre || cantidad <= 0) {
+        Alert.alert('Error', 'Completa todos los campos.');
+        return;
+      }
+      
+    set(ref(db, 'Autos/' + id), {
+      brand: marca,
+      amount: cantidad,
+      name: nombre
     });
   }
-
-  function limpiar (){
+ 
+  function limpiar (): void{
+    setid('')
+    setcantidad(0)
+    setmarca('')
     setnombre('')
-    setedad(0)
   }
 
   useEffect(() => {
-    if (Number.isNaN(edad)){
-      setedad (0)
+    if (Number.isNaN(cantidad)){
+      setcantidad (0)
     }
     }
-  , [edad])
+  , [cantidad])
   
 
   return (
     <View>
-      <Text>Formulario</Text>
+      <Text style={{fontSize:30, color:'black'}}>Formulario</Text>
       <TextInput
-        placeholder='Ingresar cedula'
+        placeholder='Ingrese un Id'
         style={styles.input}
-        onChangeText={(texto) => setcedula(texto)}
+        onChangeText={(texto) => setid(texto)}
+        value={id}
       />
 
       <TextInput
-        placeholder='Ingresar Nombre'
+        placeholder='Marca del Auto'
+        style={styles.input}
+        onChangeText={(texto) => setmarca(texto)}
+        value={marca}
+      />
+      <TextInput
+        placeholder='Nombre del Auto'
         style={styles.input}
         onChangeText={(texto) => setnombre(texto)}
         value={nombre}
       />
       <TextInput
-        placeholder='Ingresar edad'
+        placeholder='Ingresar cantidad'
         style={styles.input}
-        onChangeText={(texto) => setedad(+texto)}
-        value={edad.toString()}
+        onChangeText={(texto) => setcantidad(+texto)}
+        value={cantidad.toString()}
       />
-      <TextInput
-        placeholder='Ingresar correo'
-        style={styles.input}
-        onChangeText={(texto) => setcorreo(texto)}
-      />
+      
 
       <Button title='Guardar' onPress={()=>guardar()}/>
 
@@ -68,7 +79,7 @@ export default function Pagina1Screen() {
 
 const styles = StyleSheet.create({
   input: {
-    height: 45,
+    height: 40,
     fontSize: 30,
     backgroundColor: '#93afeb',
     margin: 10,
@@ -76,3 +87,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20
   }
 })
+
+
