@@ -11,6 +11,7 @@ function MyTabs(){
         <Tab.Navigator>
             <Tab.Screen name="Pagina1" component={Pagina1Screen}/>
             <Tab.Screen name="Pagina2" component={Pagina2Screen}/>
+            <Tab.Screen name="Pagina3" component={Pagina2Screen}/>
         </Tab.Navigator>
     );
 }
